@@ -1,0 +1,262 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1e1e1e;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333333;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555555;
+}
+
+/* Custom styles for better UX */
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #121212;
+    color: #ffffff;
+    overflow: hidden;
+  }
+  
+  #root {
+    height: 100vh;
+  }
+}
+
+@layer components {
+  .message-bubble {
+    word-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+  }
+  
+  .conversation-item {
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .conversation-item:hover {
+    transform: translateX(2px);
+  }
+  
+  .nav-item {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .nav-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s;
+  }
+  
+  .nav-item:hover::before {
+    left: 100%;
+  }
+  
+  .input-glow:focus {
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+  }
+  
+  .button-press:active {
+    transform: scale(0.98);
+  }
+  
+  .send-button-active {
+    background-color: #0073c3 !important;
+    transform: scale(0.95);
+    transition: all 0.2s ease-out;
+  }
+  
+  .message-sending {
+    animation: messageBubbleIn 0.4s ease-out;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .text-shadow {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  }
+  
+  .backdrop-blur-subtle {
+    backdrop-filter: blur(4px);
+  }
+  
+  /* Custom scrollbar for chat messages */
+  #chat-messages {
+    scroll-behavior: smooth;
+  }
+  
+  #chat-messages::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  #chat-messages::-webkit-scrollbar-track {
+    background: #1e1e1e;
+  }
+  
+  #chat-messages::-webkit-scrollbar-thumb {
+    background: #333333;
+    border-radius: 2px;
+  }
+  
+  #chat-messages::-webkit-scrollbar-thumb:hover {
+    background: #555555;
+  }
+}
+
+/* Animation keyframes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes messageBubbleIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes buttonPress {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes typingDots {
+  0%, 60%, 100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-10px);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.slide-in {
+  animation: slideIn 0.3s ease-out;
+}
+
+.message-bubble-animation {
+  animation: messageBubbleIn 0.4s ease-out;
+}
+
+.button-press-animation {
+  animation: buttonPress 0.2s ease-out;
+}
+
+.typing-indicator {
+  animation: typingDots 1.4s infinite ease-in-out;
+}
+
+.typing-indicator:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-indicator:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* Mobile specific styles */
+@media (max-width: 1024px) {
+  .mobile-chat-transition {
+    transition: transform 0.3s ease-in-out;
+  }
+}
+
+/* Focus styles for accessibility */
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid #0095f6;
+  outline-offset: 2px;
+}
+
+/* Loading states */
+.loading-shimmer {
+  background: linear-gradient(90deg, #1e1e1e 25%, #333 50%, #1e1e1e 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Status indicators */
+.status-online {
+  background: linear-gradient(45deg, #10b981, #059669);
+}
+
+.status-offline {
+  background: #6b7280;
+}
+
+.status-away {
+  background: linear-gradient(45deg, #f59e0b, #d97706);
+}
