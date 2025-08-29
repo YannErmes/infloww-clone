@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, MoreVertical, Send, Smile, Paperclip, Gift } from 'lucide-react';
+import { Search, MoreVertical, Send, Smile, Paperclip, Gift, MessageCircle } from 'lucide-react';
 import type { User, Message } from '../types';
 
 interface ChatAreaProps {
@@ -7,13 +7,15 @@ interface ChatAreaProps {
   messages: Message[];
   currentUserId: string;
   onSendMessage: (content: string) => void;
+  isAutoReplying?: boolean;
 }
 
 const ChatArea: React.FC<ChatAreaProps> = ({ 
   selectedUser, 
   messages, 
   currentUserId, 
-  onSendMessage 
+  onSendMessage,
+  isAutoReplying = false
 }) => {
   const [newMessage, setNewMessage] = useState('');
   const [isAnimating, setIsAnimating] = useState(false);
@@ -53,7 +55,7 @@ const ChatArea: React.FC<ChatAreaProps> = ({
   }
 
   return (
-    <div className="flex flex-col h-full bg-zinc-950">
+    <div className="flex flex-col h-full bg-zinc-950 flex-1">
       {/* Chat Header */}
       <div className="p-4 border-b border-zinc-700 bg-zinc-900">
         <div className="flex items-center justify-between">
@@ -85,7 +87,7 @@ const ChatArea: React.FC<ChatAreaProps> = ({
       </div>
 
       {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4" id="chat-messages">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 relative" id="chat-messages">
         {messages.map((message) => {
           const isOwn = message.senderId === currentUserId;
           return (
@@ -110,6 +112,22 @@ const ChatArea: React.FC<ChatAreaProps> = ({
             </div>
           );
         })}
+        
+        {/* Auto-reply typing indicator */}
+        {isAutoReplying && (
+          <div className="flex justify-start">
+            <div className="bg-zinc-800 text-white px-4 py-2 rounded-lg rounded-tl-none max-w-xs">
+              <div className="flex items-center space-x-1">
+                <div className="flex space-x-1">
+                  <div className="w-2 h-2 bg-zinc-500 rounded-full animate-bounce"></div>
+                  <div className="w-2 h-2 bg-zinc-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                  <div className="w-2 h-2 bg-zinc-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                </div>
+                <span className="text-xs text-zinc-400 ml-2">typing...</span>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Message Input */}
