@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Sidebar from './components/Sidebar';
 import MessageList from './components/MessageList';
 import ChatArea from './components/ChatArea';
+import FanInsights from './components/FanInsights';
 import MobileHeader from './components/MobileHeader';
 import { useMessages } from './hooks/useMessages';
 
@@ -15,7 +16,9 @@ function App() {
     setSelectedConversation,
     getMessagesForUser,
     sendMessage,
-    currentUserId
+    currentUserId,
+    getFanInsights,
+    isAutoReplying
   } = useMessages();
 
   const handleSelectConversation = (conversation: typeof conversations[0]) => {
@@ -57,7 +60,7 @@ function App() {
         
         {/* Chat Area */}
         <div className={`
-          flex-1 lg:min-w-0
+          flex lg:min-w-0 lg:flex-1
           ${showChat ? 'flex' : 'hidden lg:flex'}
         `}>
           <ChatArea
@@ -65,7 +68,16 @@ function App() {
             messages={selectedConversation ? getMessagesForUser(selectedConversation.participant.id) : []}
             currentUserId={currentUserId}
             onSendMessage={handleSendMessage}
+            isAutoReplying={isAutoReplying}
           />
+          
+          {/* Fan Insights - Hidden on mobile */}
+          <div className="hidden lg:block">
+            <FanInsights
+              selectedUser={selectedConversation?.participant || null}
+              insights={selectedConversation ? getFanInsights(selectedConversation.participant.id) : null}
+            />
+          </div>
         </div>
         
         {/* Back button for mobile */}
