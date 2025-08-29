@@ -32,17 +32,3 @@ export interface NavItem {
   icon: string;
   badge?: number;
 }
-
-export interface FanInsight {
-  subscription: number;
-  tips: number;
-  messages: number;
-  spent: number;
-  lastPaid: string;
-  highestPurchase: number;
-  subscriptionStatus: 'Free' | 'Premium' | 'VIP';
-  localTime: string;
-  source: string;
-  nickname: string;
-  birthday: string;
-}
