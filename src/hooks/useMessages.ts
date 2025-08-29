@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import type { Conversation, Message, User, FanInsight } from '../types';
+import type { Conversation, Message, User } from '../types';
 
 // Mock data
 const mockUsers: User[] = [
@@ -44,74 +44,6 @@ const mockUsers: User[] = [
     isOnline: false,
   }
 ];
-
-const mockFanInsights: Record<string, FanInsight> = {
-  '1': {
-    subscription: 0,
-    tips: 0,
-    messages: 0,
-    spent: 0,
-    lastPaid: '--',
-    highestPurchase: 0,
-    subscriptionStatus: 'Free',
-    localTime: 'Unknown',
-    source: 'Unknown',
-    nickname: 'baby',
-    birthday: ''
-  },
-  '2': {
-    subscription: 25,
-    tips: 150,
-    messages: 45,
-    spent: 220,
-    lastPaid: '2024-12-15',
-    highestPurchase: 75,
-    subscriptionStatus: 'Premium',
-    localTime: 'UTC-5 (New York)',
-    source: 'Social Media',
-    nickname: 'luna_fan',
-    birthday: '1995-08-22'
-  },
-  '3': {
-    subscription: 0,
-    tips: 25,
-    messages: 12,
-    spent: 37,
-    lastPaid: '2024-11-28',
-    highestPurchase: 25,
-    subscriptionStatus: 'Free',
-    localTime: 'UTC+1 (Paris)',
-    source: 'Direct',
-    nickname: 'aria_supporter',
-    birthday: ''
-  },
-  '4': {
-    subscription: 50,
-    tips: 300,
-    messages: 89,
-    spent: 439,
-    lastPaid: '2024-12-20',
-    highestPurchase: 100,
-    subscriptionStatus: 'VIP',
-    localTime: 'UTC+8 (Beijing)',
-    source: 'Referral',
-    nickname: 'maya_vip',
-    birthday: '1992-03-15'
-  },
-  '5': {
-    subscription: 0,
-    tips: 0,
-    messages: 0,
-    spent: 0,
-    lastPaid: '--',
-    highestPurchase: 0,
-    subscriptionStatus: 'Free',
-    localTime: 'Unknown',
-    source: 'Unknown',
-    nickname: 'zoe_new',
-    birthday: ''
-  }
-};
 
 const generateMockMessages = (userId: string): Message[] => [
   {
@@ -174,7 +106,6 @@ export const useMessages = () => {
 
   const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(conversations[0]);
   const chatMessagesRef = useRef<HTMLDivElement>(null);
-  const [isAutoReplying, setIsAutoReplying] = useState(false);
 
   const getMessagesForUser = (userId: string): Message[] => {
     return allMessagesState[userId] || [];
@@ -213,37 +144,6 @@ export const useMessages = () => {
 
     // Faire défiler vers le bas
     scrollToBottom();
-
-    // Simuler une réponse automatique après 1.5 secondes
-    if (!isAutoReplying) {
-      setIsAutoReplying(true);
-      setTimeout(() => {
-        const autoReply: Message = {
-          id: `auto-reply-${Date.now()}`,
-          senderId: selectedConversation.participant.id,
-          receiverId: 'current-user',
-          content: 'Thanks for your message! I\'ll reply soon. 😊',
-          timestamp: new Date(),
-          isRead: false,
-          type: 'text'
-        };
-
-        setAllMessagesState(prev => ({
-          ...prev,
-          [selectedConversation.participant.id]: [
-            ...(prev[selectedConversation.participant.id] || []),
-            autoReply
-          ]
-        }));
-
-        scrollToBottom();
-        setIsAutoReplying(false);
-      }, 1500);
-    }
-  };
-
-  const getFanInsights = (userId: string): FanInsight | null => {
-    return mockFanInsights[userId] || null;
   };
 
   return {
@@ -252,8 +152,6 @@ export const useMessages = () => {
     setSelectedConversation,
     getMessagesForUser,
     sendMessage,
-    currentUserId: 'current-user',
-    getFanInsights,
-    isAutoReplying
+    currentUserId: 'current-user'
   };
 };
